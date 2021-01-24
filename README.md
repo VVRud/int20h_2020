@@ -69,7 +69,7 @@ The first of all we revert the users array so that we have users in order week-N
 Hey, you are back! Nice to meet you... Again. We are counting users by weeks here, come to see it.
 
 ```python
-    users = user_counts[::-1].cumsum()[::-1]
+users = user_counts[::-1].cumsum()[::-1]
 ```
 
 </details>
