@@ -42,20 +42,20 @@ The second grouping is done by `Event Date` (which is count of user weeks now) w
 
 Using this two groupings we will have a dataset where index is the week number and single column represents users who renewed their subscription after week 1.
 
-<details>
-    <summary>Code for this operation</summary>
+<details><summary>Code for this operation</summary>
 
-    Thank you for opening this spoiler. I thought it will be never opened. Groupings stuff is here.
+Thank you for opening this spoiler. I thought it will never be opened. Groupings stuff is here.
 
-    ```python
-    data = (data
-            .groupby(by="Subscriber ID").count()
-            .reset_index()
-            .groupby(by="Event Date").count()
-            .sort_index()
-            )["Subscriber ID"]
-    weeks, user_counts = data.index.values - 1, data.values
-    ```
+```python
+data = (data
+        .groupby(by="Subscriber ID").count()
+        .reset_index()
+        .groupby(by="Event Date").count()
+        .sort_index()
+        )["Subscriber ID"]
+weeks, user_counts = data.index.values - 1, data.values
+```
+
 </details>
 
 ### Using Retention
@@ -64,26 +64,26 @@ The first of all we must mention that (just for now) we did not took into accoun
 
 The first of all we revert the users array so that we have users in order week-N to week-0, ant take cumulative sum. With that trick we users from week-N will sum to users from week-(N-1), week-(N-2) and so on. Now we only need wo revert the list backwards.
 
-<details>
-    <summary>Code for this operation</summary>
+<details><summary>Code for this operation</summary>
 
-    Hey, you are back! Nice to meet you... Again. We are counting users by weeks here, come to see it.
+Hey, you are back! Nice to meet you... Again. We are counting users by weeks here, come to see it.
 
-    ```python
+```python
     users = user_counts[::-1].cumsum()[::-1]
-    ```
+```
+
 </details>
 
 To calculate rolling retention we should divide users from week-N to week-(N-1). To do that we just shift our list to left and divide it by itself original.
 
-<details>
-    <summary>Code for this operation</summary>
-    
-    Wow, you opened it. Very impressive. Just simple shift and division code here. ~~Why I have created a spoiler for it?~~
+<details><summary>Code for this operation</summary>
 
-    ```python
-    users[1:] / users[0:-1]
-    ```
+Wow, you opened it. Very impressive. Just simple shift and division code here. ~~Why I have created a spoiler for it?~~
+
+```python
+users[1:] / users[0:-1]
+```
+
 </details>
 
 Next part is just cumulative production of all the elements in the list and multiplying it by `price * (1 - fee)`.
