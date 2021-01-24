@@ -44,6 +44,9 @@ Using this two groupings we will have a dataset where index is the week number a
 
 <details>
     <summary>Code for this operation</summary>
+
+    Thank you for opening this spoiler. I thought it will be never opened. Groupings stuff is here.
+
     ```python
     data = (data
             .groupby(by="Subscriber ID").count()
@@ -63,6 +66,9 @@ The first of all we revert the users array so that we have users in order week-N
 
 <details>
     <summary>Code for this operation</summary>
+
+    Hey, you are back! Nice to meet you... Again. We are counting users by weeks here, come to see it.
+
     ```python
     users = user_counts[::-1].cumsum()[::-1]
     ```
@@ -72,6 +78,9 @@ To calculate rolling retention we should divide users from week-N to week-(N-1).
 
 <details>
     <summary>Code for this operation</summary>
+    
+    Wow, you opened it. Very impressive. Just simple shift and division code here. ~~Why I have created a spoiler for it?~~
+
     ```python
     users[1:] / users[0:-1]
     ```
