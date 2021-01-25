@@ -143,6 +143,6 @@ This stuff is freaking fast. Just look at it!
 - Vladyslav Zalevskyi (Tg: @vzalevskyi)
 - Vladyslav Rudenko (Tg: @VVRud)
 - Olga Pashneva (Tg: @DDR335)
-- Olena Poliakova (Tg: @oradchykova)
+- Olena Radchykova (Tg: @oradchykova)
 
 ![Bye bye!](https://media.giphy.com/media/1xucXbDnMIYkU/giphy.gif)
