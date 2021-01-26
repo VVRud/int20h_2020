@@ -34,7 +34,7 @@ def parser() -> argparse.ArgumentParser:
         help="app price, must be positive float number"
     )
     parser.add_argument(
-        "--fee", type=check_fee, required=True, default=0.3,
+        "--fee", type=check_fee, required=False, default=0.3,
         help="fee taken by the store (0.3 for AppStore, 0.2 for PlayStore)"
     )
     parser.add_argument(
