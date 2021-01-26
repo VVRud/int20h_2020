@@ -6,41 +6,41 @@
 
 ## Task Description
 
-Creat a console application for calculating LTV from input data.
+Create a console application for calculating LTV of input data.
 
-**User flow** is next:
+**User interaction flow** is the following:
 
 0. Trial
 1. First purchase
 2. Second purchase
 3. N-th purchase
 
-User makes subscription for every week and user can unsubscribe in any moment and he will not pay anymore.
+User makes weekly subscriptions which can be cancelled at any point. 
 
-Apple store takes **30% fee** from each purchase in application.
+Apple store takes **30% fee** from each purchase in the application.
 
 Application **price** is $9.99.
 
 ## Task Solution
 
-The first of all, taking in account user flow, we will have (N - 1) "rolling" (kinda) retention values: from trial to first purchase, from first purchase to second purchase and so on.
+First of all, taking into account user interaction flow, we will have (N - 1) "rolling" (kinda) retention values: from trial to first purchase, from first purchase to second purchase and so on.
 
-From all the data we will need only 2 columns. The first one is `Subscriber ID`, the second one is `Event Date`. We can drop all other columns \`cause in provided dataset all other columns are not informative for this task.
+From the initial data, we will only need  2 columns:`Subscriber ID` and `Event Date`. We can drop all other columns \`cause in the provided dataset, all other columns are not needed for this task.
 
-We can calculate LTV from this data using 2 different approaches:
+We can calculate LTV using given data through 2 different approaches:
 
 1. Using retention.
-2. Using average lifetime money spent (method is taken from [here](https://www.thebalancesmb.com/how-to-calculate-the-lifetime-value-of-a-customer-4173824)).
+2. Using average lifetime money spent (the method is taken from [here](https://www.thebalancesmb.com/how-to-calculate-the-lifetime-value-of-a-customer-4173824)).
 
-For both methods we will need an array of users renewing the subscription for each week (from 0-'trial' to N-1) and for the second method we will additionaly use an array of weeks from 0 to N-1.
+For both methods, we will need an array of users renewing the subscription for each week (from 0-'trial' to N-1) and for the second method, we will additionally use an array of weeks from 0 to N-1.
 
-To get this data we simply do some pandas grouping and aggregation stuff.
+To get this data we simply need to do some pandas grouping and aggregation.
 
-The first grouping is done by `Subscriber ID` with `count` aggregation. This will tell us how many weeks each individual user was interesated in buying our application.
+The first grouping is done by `Subscriber ID` with `count` aggregation. This will tell us how many weeks each individual user was interested in buying our application.
 
-The second grouping is done by `Event Date` (which is count of user weeks now) with `count` aggregation. This will give us information about how many users bought our application in every week.
+The second grouping is done by `Event Date` with `count` aggregation. This will give us information about how many users bought our application every week.
 
-Using this two groupings we will have a dataset where index is the week number and single column represents users who renewed their subscription after week 1.
+Using these two groupings we will have a dataset where the index is the week number and a single column represents users who renewed their subscription after week 1.
 
 <details><summary>Code for this operation</summary>
 
@@ -60,9 +60,9 @@ weeks, user_counts = data.index.values - 1, data.values
 
 ### Using Retention
 
-The first of all we must mention that (just for now) we did not took into account users week-N users into week-(N-1)...week-0 users, so we must fix it.
+We should mention that (just for now) we did not take into account users week-N users into the week-(N-1)...week-0 users, so we must fix it.
 
-The first of all we revert the users array so that we have users in order week-N to week-0, ant take cumulative sum. With that trick we users from week-N will sum to users from week-(N-1), week-(N-2) and so on. Now we only need wo revert the list backwards.
+First of all, we revert the user's array so that we have users in order week-N to week-0, and take the cumulative sum. That trick will sum users from week-N to users from the week-(N-1), week-(N-2) and so on. Now we only need to revert the list backwards.
 
 <details><summary>Code for this operation</summary>
 
@@ -74,7 +74,7 @@ users = user_counts[::-1].cumsum()[::-1]
 
 </details>
 
-To calculate rolling retention we should divide users from week-N to week-(N-1). To do that we just shift our list to left and divide it by itself original.
+To calculate rolling retention we should divide users from week-N to week-(N-1). To do that we just shift our list to left and divide it by its original.
 
 <details><summary>Code for this operation</summary>
 
@@ -86,11 +86,11 @@ users[1:] / users[0:-1]
 
 </details>
 
-Next part is just cumulative production of all the elements in the list and multiplying it by `price * (1 - fee)`.
+Next part is just cumulative production of all the elements in the list and its multiplication by `price * (1 - fee)`.
 
 ### Using Average Lifetime Money Spent
 
-This is quite easy. We do not have users who pay in week-0, so we just multiply week numbers by number of users who payed and multiply it by `price * (1 - fee)`. We will get distribution of money spent by users depending on how long do they use our app. The next step is just sum and division by the number of users.
+This is quite easy. We do not have users who pay in week-0, so we just multiply week numbers by the number of users who paid and multiply it by `price * (1 - fee)`. We will get the distribution of money spent by users depending on how long do they use our app. The next step is just sum and division by the number of users.
 
 ## Application Usage
 
@@ -110,9 +110,9 @@ To get help how to run it you can use:
 python ltv.py -h
 ```
 
-This will give you all parameters description and show example on how to run it.
+This will give you all parameters description and show an example on how to run it.
 
-To run program with default parameters:
+To run the program with default parameters:
 
 ```bash
 python ltv.py
@@ -124,13 +124,13 @@ The full application command is next(all parameters are optional):
 python --path PATH/TO/FILE --price 10 --fee 0.1 --with-retention
 ```
 
-To change path to file with data use `--path PATH/TO/FILE` parameter.
+To change the path to file with data use `--path PATH/TO/FILE` parameter.
 
 To change application price use `--price` parameter.
 
 To change market fee `--fee` parameter.
 
-To run application with retention calculations use `--use-retention` parameter.
+To run the application with retention calculations use `--use-retention` parameter.
 
 ## Timing
 
